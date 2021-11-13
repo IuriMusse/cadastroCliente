@@ -1,0 +1,154 @@
+unit ViaCliente.Core;
+
+interface
+
+uses IdHTTP, IdSSLOpenSSL, ViaCliente.Intf, ViaCliente.Model, IdIOHandler, IdIOHandlerSocket,
+  IdIOHandlerStack, IdSSL, IdBaseComponent, IdComponent,
+  IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase,
+  IdSMTPBase, IdSMTP, IdMessage, IdAttachment,IdAttachmentFile, System.Classes;
+
+type
+  TViaCliente = class(TInterfacedObject, IViaCliente)
+  private
+    FIdHTTP: TIdHTTP;
+    FIdSSLIOHandlerSocketOpenSSL: TIdSSLIOHandlerSocketOpenSSL;
+
+    function Get(const ACep: string): TViaClienteClass;
+    function Validate(const ACep: string): Boolean;
+    function SendEmail(sendTo: string;
+                    subject: string;
+                    body: string;
+                    attachFiles: TStringList;
+                    smtpHost: string;
+                    smtpPort: Integer;
+                    smtpUser: string;
+                    smtpPass: string;
+                    tls: TIdUseTLS): boolean;
+  public
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
+implementation
+
+uses REST.Json, System.SysUtils;
+
+constructor TViaCliente.Create;
+begin
+  FIdHTTP := TIdHTTP.Create;
+  FIdSSLIOHandlerSocketOpenSSL := TIdSSLIOHandlerSocketOpenSSL.Create;
+  FIdHTTP.IOHandler := FIdSSLIOHandlerSocketOpenSSL;
+  FIdSSLIOHandlerSocketOpenSSL.SSLOptions.SSLVersions := [sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
+end;
+
+function TViaCliente.Get(const ACep: string): TViaClienteClass;
+const
+  URL = 'https://viacep.com.br/ws/%s/json';
+  INVALID_CEP = '{'#$A'  "erro": true'#$A'}';
+var
+  LResponse: TStringStream;
+begin
+  Result := nil;
+  LResponse := TStringStream.Create;
+  try
+    FIdHTTP.Get(Format(URL, [ACep.Trim]), LResponse);
+    if (FIdHTTP.ResponseCode = 200) and (not (LResponse.DataString).Equals(INVALID_CEP)) then
+      Result := TJson.JsonToObject<TViaClienteClass>(UTF8ToString(PAnsiChar(AnsiString(LResponse.DataString))));
+  finally
+    LResponse.Free;
+  end;
+end;
+
+function TViaCliente.Validate(const ACep: string): Boolean;
+const
+  INVALID_CHARACTER = -1;
+begin
+  Result := True;
+  if ACep.Trim.Length <> 8 then
+    Exit(False);
+  if StrToIntDef(ACep, INVALID_CHARACTER) = INVALID_CHARACTER then
+    Exit(False);
+end;
+
+function TViaCliente.SendEmail(sendTo: string;
+                    subject: string;
+                    body: string;
+                    attachFiles: TStringList;
+                    smtpHost: string;
+                    smtpPort: Integer;
+                    smtpUser: string;
+                    smtpPass: string;
+                    tls: TIdUseTLS): boolean;
+var
+    smtp: TIdSmtp;
+    ssl: TIdSSLIOHandlerSocketOpenSSL;
+    msg: TIdMessage;
+    i: Integer;
+begin
+    smtp:=TIdSmtp.Create(nil);
+    ssl:=TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    msg:=TIdMessage.Create(nil);
+    try
+
+        try
+            smtp.Host:=smtpHost;
+            smtp.Port:=smtpPort;
+            smtp.Username:=smtpUser;
+            smtp.Password:=smtpPass;
+
+            //smtp.OnConnected :=IdSMTP1Connected;
+            //smtp.OnDisconnected :=IdSMTP1Disconnected;
+            //smtp.OnFailedRecipient :=IdSMTP1FailedRecipient;
+            //smtp.OnStatus :=IdSMTP1Status;
+            //smtp.OnTLSNotAvailable :=IdSMTP1TLSNotAvailable;
+            //smtp.OnWork :=IdSMTP1Work;
+
+            if not (tls=utNoTLSSupport) then begin
+                ssl.Destination:=smtpHost + ':' + IntToStr(smtpPort);
+                ssl.Host:=smtpHost;
+                ssl.Port:=smtpPort;
+                ssl.SSLOptions.Method:=sslvTLSv1;
+
+                //ssl.OnStatusInfo:=IdSSLIOHandlerSocketOpenSSL1StatusInfo;
+                //ssl.OnGetPassword:=IdSSLIOHandlerSocketOpenSSL1GetPassword;
+                //ssl.OnStatus:=IdSSLIOHandlerSocketOpenSSL1Status;
+
+                smtp.IOHandler:=ssl;
+                smtp.UseTLS:=tls;
+            end;
+
+            msg.Recipients.EMailAddresses := sendTo;
+            msg.Subject:=subject;
+            msg.Body.Text:=body;
+
+            if(Assigned(attachFiles)) then begin
+                for i := 0 to attachFiles.Count - 1 do begin
+                   if FileExists(attachFiles[i]) then
+                        TIdAttachmentFile.Create(msg.MessageParts, attachFiles[i]);
+                end;
+            end;
+
+            smtp.Connect;
+            smtp.Send(msg);
+            smtp.Disconnect;
+
+            result:=true;
+        finally
+            msg.Free;
+            ssl.Free;
+            smtp.Free;
+        end;
+    except
+       result:=false;
+    end;
+
+end;
+
+destructor TViaCliente.Destroy;
+begin
+  FIdSSLIOHandlerSocketOpenSSL.Free;
+  FIdHTTP.Free;
+  inherited;
+end;
+
+end.

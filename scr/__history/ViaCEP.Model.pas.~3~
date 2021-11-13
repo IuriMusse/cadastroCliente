@@ -1,0 +1,113 @@
+unit ViaCEP.Model;
+
+interface
+
+uses REST.Json.Types;
+
+type
+
+  TViaCEPClass = class
+  private
+    FLogradouro: string;
+    FNumero: string;
+    FBairro: string;
+    [JSONNameAttribute('uf')]
+    FUF: string;
+    [JSONNameAttribute('cep')]
+    FCEP: string;
+    FLocalidade: string;
+    FComplemento: string;
+    FPais: string;
+    procedure SetBairro(const Value: string);
+    procedure SetCEP(const Value: string);
+    procedure SetComplemento(const Value: string);
+    procedure SetNumero(const Value: string);
+    procedure SetLocalidade(const Value: string);
+    procedure SetLogradouro(const Value: string);
+    procedure SetUF(const Value: string);
+    procedure SetPais(const Value: string);
+  public
+    property CEP: string read FCEP write SetCEP;
+    property Logradouro: string read FLogradouro write SetLogradouro;
+    property Complemento: string read FComplemento write SetComplemento;
+    property Bairro: string read FBairro write SetBairro;
+    property Localidade: string read FLocalidade write SetLocalidade;
+    property UF: string read FUF write SetUF;
+    property Numero: string read FNumero write SetNumero;
+    property Pais: string read FPais write SetPais;
+    /// <summary>
+    ///   Converts the current instance of the TCEPClass class to a JSON in the string format.
+    /// </summary>
+    /// <returns>
+    ///   Returns a JSONObject in string format.
+    /// </returns>
+    function ToJSONString: string;
+    /// <summary>
+    ///   Instance an object of class TCEPClass with the data of a JSON in the string format.
+    /// </summary>
+    /// <param name="AJSONString">
+    ///   JSON containing the data of class TCEPClass in the string format.
+    /// </param>
+    /// <returns>
+    ///   Returns an instance of the TCEPClass class.
+    /// </returns>
+    class function FromJSONString(const AJSONString: string): TViaCEPClass;
+  end;
+
+implementation
+
+uses REST.Json;
+
+{ TViaCEPClass }
+
+class function TViaCEPClass.FromJSONString(const AJSONString: string): TViaCEPClass;
+begin
+  Result := TJson.JsonToObject<TViaCEPClass>(AJSONString);
+end;
+
+procedure TViaCEPClass.SetBairro(const Value: string);
+begin
+  FBairro := Value;
+end;
+
+procedure TViaCEPClass.SetCEP(const Value: string);
+begin
+  FCEP := Value;
+end;
+
+procedure TViaCEPClass.SetComplemento(const Value: string);
+begin
+  FComplemento := Value;
+end;
+
+procedure TViaCEPClass.SetPais(const Value: string);
+begin
+  FPais := Value;
+end;
+
+procedure TViaCEPClass.SetNumero(const Value: string);
+begin
+  FNumero := Value;
+end;
+
+procedure TViaCEPClass.SetLocalidade(const Value: string);
+begin
+  FLocalidade := Value;
+end;
+
+procedure TViaCEPClass.SetLogradouro(const Value: string);
+begin
+  FLogradouro := Value;
+end;
+
+procedure TViaCEPClass.SetUF(const Value: string);
+begin
+  FUF := Value;
+end;
+
+function TViaCEPClass.ToJSONString: string;
+begin
+  Result := TJson.ObjectToJsonString(Self, [joIgnoreEmptyStrings]);
+end;
+
+end.

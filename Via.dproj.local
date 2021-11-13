@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021/11/12 10:01:30.000.384,=C:\Users\MUSSE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 10:02:18.000.443,D:\PROJETO\INFO\ViaCliente.pas=C:\Users\MUSSE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 10:02:18.000.444,D:\PROJETO\INFO\ViaCliente.dfm=C:\Users\MUSSE\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2021/11/12 10:02:37.000.486,D:\PROJETO\INFO\Via.dproj=C:\Users\MUSSE\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2021/11/12 10:04:43.000.497,=D:\PROJETO\INFO\scr\ViaCEP.Core.pas</Transaction>
+    <Transaction>2021/11/12 10:04:43.000.502,=D:\PROJETO\INFO\scr\ViaCEP.Intf.pas</Transaction>
+    <Transaction>2021/11/12 10:04:43.000.508,=D:\PROJETO\INFO\scr\ViaCEP.Model.pas</Transaction>
+    <Transaction>2021/11/12 11:22:02.000.920,D:\PROJETO\INFO\scr\ViaCliente.Model.pas=D:\PROJETO\INFO\scr\ViaCEP.Model.pas</Transaction>
+    <Transaction>2021/11/12 11:23:20.000.387,D:\PROJETO\INFO\scr\ViaCliente.Model.pas=</Transaction>
+    <Transaction>2021/11/12 11:23:35.000.439,=D:\PROJETO\INFO\scr\ViaCliente.Model.pas</Transaction>
+    <Transaction>2021/11/12 11:24:56.000.328,D:\PROJETO\INFO\scr\ViaCEP.Model.pas=D:\PROJETO\INFO\scr\ViaCliente.Model.pas</Transaction>
+    <Transaction>2021/11/12 11:26:32.000.594,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:27:51.000.973,D:\PROJETO\INFO\scr\ViaCliente.Model.pas=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:28:28.000.051,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:29:16.000.650,D:\PROJETO\INFO\scr\ViaCliente.Intf.pas=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:29:30.000.590,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:32:09.000.090,D:\PROJETO\INFO\scr\ViaClienteCore.pas=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:33:15.000.587,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:33:30.000.840,D:\PROJETO\INFO\scr\ViaCliente.Core.pas=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 11:38:43.000.833,D:\PROJETO\INFO\scr\ViaClienteCore.pas=</Transaction>
+    <Transaction>2021/11/12 12:48:28.000.747,D:\PROJETO\INFO\scr\ViaCEP.Intf.pas=</Transaction>
+    <Transaction>2021/11/12 14:48:08.000.655,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 14:49:41.000.277,D:\PROJETO\INFO\Unit1.pas=D:\PROJETO\INFO\scr\Service.Mail.pas</Transaction>
+    <Transaction>2021/11/12 14:49:50.000.386,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 14:51:53.000.965,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 14:56:23.000.364,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 14:59:00.000.654,D:\PROJETO\INFO\Unit1.pas=D:\PROJETO\INFO\scr\Envio.Mail.pas</Transaction>
+    <Transaction>2021/11/12 15:02:32.000.827,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 15:02:56.000.487,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/12 15:05:58.000.913,D:\PROJETO\INFO\scr\Envio.Mail.pas=</Transaction>
+    <Transaction>2021/11/12 15:06:07.000.002,D:\PROJETO\INFO\scr\Service.Mail.pas=</Transaction>
+    <Transaction>2021/11/13 08:13:55.000.702,=D:\PROJETO\INFO\Unit1.pas</Transaction>
+    <Transaction>2021/11/13 08:18:15.000.566,D:\PROJETO\INFO\scr\Envio.Mail.pas=D:\PROJETO\INFO\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

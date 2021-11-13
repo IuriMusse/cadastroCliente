@@ -1,0 +1,25 @@
+unit ViaCliente.Intf;
+
+interface
+
+uses ViaCliente.Model, System.Classes, IdExplicitTLSClientServerBase;
+
+type
+  IViaCliente = interface
+
+    function Get(const ACep: string): TViaClienteClass;
+    function Validate(const ACep: string): Boolean;
+    function SendEmail(sendTo: string;
+                    subject: string;
+                    body: string;
+                    attachFiles: TStringList;
+                    smtpHost: string;
+                    smtpPort: Integer;
+                    smtpUser: string;
+                    smtpPass: string;
+                    tls: TIdUseTLS): boolean;
+  end;
+
+implementation
+
+end.

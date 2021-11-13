@@ -1,0 +1,106 @@
+unit ViaCliente.Core;
+
+interface
+
+uses IdHTTP, IdSSLOpenSSL, ViaCliente.Intf, ViaCliente.Model, System.Classes, IdSMTP, IdMessage, IdEMailAddress;
+
+type
+  TViaCliente = class(TInterfacedObject, IViaCliente)
+  private
+    FIdHTTP: TIdHTTP;
+    FIdSSLIOHandlerSocketOpenSSL: TIdSSLIOHandlerSocketOpenSSL;
+
+    function Get(const ACep: string): TViaClienteClass;
+    function Validate(const ACep: string): Boolean;
+    procedure SendEmail;
+  public
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
+implementation
+
+uses REST.Json, System.SysUtils;
+
+constructor TViaCliente.Create;
+begin
+  FIdHTTP := TIdHTTP.Create;
+  FIdSSLIOHandlerSocketOpenSSL := TIdSSLIOHandlerSocketOpenSSL.Create;
+  FIdHTTP.IOHandler := FIdSSLIOHandlerSocketOpenSSL;
+  FIdSSLIOHandlerSocketOpenSSL.SSLOptions.SSLVersions := [sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
+end;
+
+function TViaCliente.Get(const ACep: string): TViaClienteClass;
+const
+  URL = 'https://viacep.com.br/ws/%s/json';
+  INVALID_CEP = '{'#$A'  "erro": true'#$A'}';
+var
+  LResponse: TStringStream;
+begin
+  Result := nil;
+  LResponse := TStringStream.Create;
+  try
+    FIdHTTP.Get(Format(URL, [ACep.Trim]), LResponse);
+    if (FIdHTTP.ResponseCode = 200) and (not (LResponse.DataString).Equals(INVALID_CEP)) then
+      Result := TJson.JsonToObject<TViaClienteClass>(UTF8ToString(PAnsiChar(AnsiString(LResponse.DataString))));
+  finally
+    LResponse.Free;
+  end;
+end;
+
+function TViaCliente.Validate(const ACep: string): Boolean;
+const
+  INVALID_CHARACTER = -1;
+begin
+  Result := True;
+  if ACep.Trim.Length <> 8 then
+    Exit(False);
+  if StrToIntDef(ACep, INVALID_CHARACTER) = INVALID_CHARACTER then
+    Exit(False);
+end;
+
+procedure TViaCliente.SendEmail;
+var
+  IdSMTP: TIdSMTP;
+  IdMessage: TIdMessage;
+  IdEmailAddressItem: TIdEmailAddressItem;
+begin
+  IdSMTP := TIdSMTP.Create(nil);
+  try
+    IdSMTP.Host := 'smtp.gmail.com';
+    IdSMTP.Port := 25;
+    IdSMTP.AuthType := satDefault;
+    IdSMTP.Username := 'iurimusse@gmail.com';
+    IdSMTP.Password := 'filhos2975';
+    IdSMTP.Connect;
+    if IdSMTP.Authenticate then
+    begin
+      IdMessage := TIdMessage.Create(nil);
+      try
+        IdMessage.From.Name := 'User Name';
+        IdMessage.From.Address := 'iurimusse@hotmail.com';
+        IdMessage.Subject := 'E-mail subject';
+        IdMessage.Body.Add('E-mail body.');
+
+        IdEmailAddressItem := IdMessage.Recipients.Add;
+        IdEmailAddressItem.Address := 'recipient@email.com';
+
+        IdSMTP.Send(IdMessage);
+      finally
+        IdMessage.Free;
+      end;
+    end;
+    IdSMTP.Disconnect;
+  finally
+    IdSMTP.Free;
+  end;
+end;
+
+destructor TViaCliente.Destroy;
+begin
+  FIdSSLIOHandlerSocketOpenSSL.Free;
+  FIdHTTP.Free;
+  inherited;
+end;
+
+end.

@@ -1,0 +1,16 @@
+unit ViaCliente.Intf;
+
+interface
+
+uses ViaCliente.Model, System.Classes, IdExplicitTLSClientServerBase;
+
+type
+  IViaCliente = interface
+
+    function Get(const ACep: string): TViaClienteClass;
+    function Validate(const ACep: string): Boolean;
+  end;
+
+implementation
+
+end.

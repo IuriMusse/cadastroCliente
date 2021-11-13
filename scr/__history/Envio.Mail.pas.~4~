@@ -1,0 +1,30 @@
+unit Envio.Mail;
+
+interface
+
+uses Dialogs;
+
+type
+   novoEmail = class
+     msgRecipient: string;
+     msgCC: string;
+     msgSubject: string;
+     msgFromAddress: string;
+     msgBodyAdd: string;
+     msgAttachment: string;
+     function enviarEmail(): Boolean;
+   end;
+
+implementation
+
+{ novoEmail }
+
+function novoEmail.enviarEmail: Boolean;
+var
+ SMTPCon: TidSMTP;
+
+begin
+
+end;
+
+end.

@@ -1,0 +1,17 @@
+program Via;
+
+uses
+  Vcl.Forms,
+  ViaCliente in 'ViaCliente.pas' {frmViaCliente},
+  ViaCEP.Core in 'scr\ViaCEP.Core.pas',
+  ViaCEP.Intf in 'scr\ViaCEP.Intf.pas',
+  ViaCEP.Model in 'scr\ViaCEP.Model.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmViaCliente, frmViaCliente);
+  Application.Run;
+end.
